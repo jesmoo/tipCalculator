@@ -1,8 +1,21 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import '../Styles/Components/MainTip.css';
 import '../Styles/queries/mainQueries.css';
 
 const MainTip = () => {
+  let resut = 0;
+  let resultOnly = 0;
+  const setResultAllTips = useRef();
+  const setResultLonlyTips = useRef();
+
+  const handleChangeBill = (e) => {
+    resut = e.target.value;
+    console.log('a', resut);
+  };
+  console.log(resut);
+  const handleChangePeople = (e) => {
+    resultOnly = resut / e.target.value;
+  };
   return (
     <main className="contianer__main">
       <h1>Tip calculator</h1>
@@ -16,7 +29,7 @@ const MainTip = () => {
               type="number"
               name="bill"
               id="bill"
-              required="true"
+              onChange={handleChangeBill}
             />
           </section>
         </section>
@@ -38,9 +51,9 @@ const MainTip = () => {
             <input
               className="innerText__text"
               type="number"
-              required="true"
               name="people"
               id="people"
+              onChange={handleChangePeople}
             />
           </section>
         </section>
@@ -50,14 +63,14 @@ const MainTip = () => {
               <p className="text__personTip">Tip amount /</p>
               <p className="text__persons"> person</p>
             </div>
-            <p className="text__count">$ 0.0</p>
+            <p className="text__count">$ {resultOnly}</p>
           </section>
           <section className="see__textAll">
             <div className="textAll__text">
               <p className="text__personTip">Tip amount /</p>
-              <p className="text__persons"> person</p>
+              <p className="text__persons"> All</p>
             </div>
-            <p className="text__countAll">$ 0.0</p>
+            <p className="text__countAll">$ {resut}</p>
           </section>
           <section className="see__reset">
             <bottom className="reset__btn">Reset</bottom>
