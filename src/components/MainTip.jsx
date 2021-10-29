@@ -3,18 +3,62 @@ import '../Styles/Components/MainTip.css';
 import '../Styles/queries/mainQueries.css';
 
 const MainTip = () => {
-  let resut = 0;
-  let resultOnly = 0;
-  const setResultAllTips = useRef();
-  const setResultLonlyTips = useRef();
+  const [result, setResult] = useState(0);
+  const [origin, setOrigin] = useState(0);
+  const [resultAll, setResultAll] = useState(0);
+  const [personas, setPersonas] = useState(0);
+
+  let resLonly = 0;
+  let resAll = 0;
+  let personsTarget = 0;
+
+  const btn5 = useRef();
+  const btn10 = useRef();
+  const btn15 = useRef();
+  const btn25 = useRef();
+  const btn50 = useRef();
 
   const handleChangeBill = (e) => {
-    resut = e.target.value;
-    console.log('a', resut);
+    resLonly = parseInt(e.target.value);
+    setResult(resLonly);
+    setOrigin(resLonly);
   };
-  console.log(resut);
   const handleChangePeople = (e) => {
-    resultOnly = resut / e.target.value;
+    personsTarget = parseInt(e.target.value);
+    resAll = result / personsTarget;
+    setPersonas(personsTarget);
+    setResultAll(resAll.toFixed(2));
+  };
+  const changePeople = (number, value2) => {
+    if (personas !== 0) {
+      // Check if they are updating the data of what each personas will pay individually.
+      personsTarget = parseInt(number);
+      resAll = result / personsTarget;
+      setResultAll(resAll.toFixed(2));
+    }
+  };
+  const handleClick = (e) => {
+    const btnTip = [
+      btn5.current.classList,
+      btn10.current.classList,
+      btn15.current.classList,
+      btn25.current.classList,
+      btn50.current.classList,
+    ];
+    // check if there is no other button activated
+    for (const item of btnTip) {
+      if (item.contains('illuminate')) {
+        item.toggle('illuminate');
+      }
+    }
+    // Once the selected buttons have been removed, the calculation is performed
+    e.target.classList.toggle('illuminate');
+    let value = 1 + parseInt(e.target.innerText) / 100;
+    let value2 = origin * value.toFixed(2);
+
+    changePeople(personas, value2);
+
+    setResult(value2.toFixed(2));
   };
   return (
     <main className="contianer__main">
@@ -35,11 +79,31 @@ const MainTip = () => {
         </section>
         <section className="tip__select">
           <p>Select Tip %</p>
-          <bottom className="select__percent"> 5%</bottom>
-          <bottom className="select__percent">10%</bottom>
-          <bottom className="select__percent">15%</bottom>
-          <bottom className="select__percent">25%</bottom>
-          <bottom className="select__percent">50% </bottom>
+          <bottom
+            className="select__percent"
+            ref={btn5}
+            value="5"
+            onClick={handleClick}
+          >
+            5%
+          </bottom>
+          <bottom className="select__percent" ref={btn10} onClick={handleClick}>
+            10%
+          </bottom>
+          <bottom className="select__percent" ref={btn15} onClick={handleClick}>
+            15%
+          </bottom>
+          <bottom
+            className="select__percent"
+            ref={btn25}
+            value="25"
+            onClick={handleClick}
+          >
+            25%
+          </bottom>
+          <bottom className="select__percent" ref={btn50} onClick={handleClick}>
+            50%
+          </bottom>
           <bottom className="select__percent select__percent-custom">
             Custom
           </bottom>
@@ -63,14 +127,14 @@ const MainTip = () => {
               <p className="text__personTip">Tip amount /</p>
               <p className="text__persons"> person</p>
             </div>
-            <p className="text__count">$ {resultOnly}</p>
+            <p className="text__count">$ {result}</p>
           </section>
           <section className="see__textAll">
             <div className="textAll__text">
               <p className="text__personTip">Tip amount /</p>
               <p className="text__persons"> All</p>
             </div>
-            <p className="text__countAll">$ {resut}</p>
+            <p className="text__countAll">$ {resultAll}</p>
           </section>
           <section className="see__reset">
             <bottom className="reset__btn">Reset</bottom>
