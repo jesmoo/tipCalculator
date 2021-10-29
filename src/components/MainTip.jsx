@@ -17,6 +17,7 @@ const MainTip = () => {
   const btn15 = useRef();
   const btn25 = useRef();
   const btn50 = useRef();
+  const btnCustom = useRef();
 
   const handleChangeBill = (e) => {
     resLonly = parseInt(e.target.value);
@@ -37,7 +38,7 @@ const MainTip = () => {
       setResultAll(resAll.toFixed(2));
     }
   };
-  const handleClick = (e) => {
+  const handleChangeCustom = (e) => {
     const btnTip = [
       btn5.current.classList,
       btn10.current.classList,
@@ -47,6 +48,30 @@ const MainTip = () => {
     ];
     // check if there is no other button activated
     for (const item of btnTip) {
+      if (item.contains('illuminate')) {
+        item.toggle('illuminate');
+      }
+    }
+    // Once the selected buttons have been removed, the calculation is performed
+    e.target.classList.add('illuminate');
+    let value = 1 + parseInt(e.target.value) / 100;
+    let value2 = origin * value.toFixed(2);
+
+    changePeople(personas, value2);
+
+    setResult(value2.toFixed(2));
+  };
+  const handleClick = (e) => {
+    const btnTip2 = [
+      btn5.current.classList,
+      btn10.current.classList,
+      btn15.current.classList,
+      btn25.current.classList,
+      btn50.current.classList,
+      btnCustom.current.classList,
+    ];
+    // check if there is no other button activated
+    for (const item of btnTip2) {
       if (item.contains('illuminate')) {
         item.toggle('illuminate');
       }
@@ -105,7 +130,15 @@ const MainTip = () => {
             50%
           </bottom>
           <bottom className="select__percent select__percent-custom">
-            Custom
+            <input
+              className="innerText__text-custom"
+              type="number"
+              name="people"
+              placeholder="Custom"
+              id="people"
+              ref={btnCustom}
+              onChange={handleChangeCustom}
+            />
           </bottom>
         </section>
         <section className="tip__people">
