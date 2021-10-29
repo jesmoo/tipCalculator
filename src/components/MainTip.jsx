@@ -18,6 +18,8 @@ const MainTip = () => {
   const btn25 = useRef();
   const btn50 = useRef();
   const btnCustom = useRef();
+  const innerBill = useRef();
+  const innerPeople = useRef();
 
   const handleChangeBill = (e) => {
     resLonly = parseInt(e.target.value);
@@ -39,19 +41,8 @@ const MainTip = () => {
     }
   };
   const handleChangeCustom = (e) => {
-    const btnTip = [
-      btn5.current.classList,
-      btn10.current.classList,
-      btn15.current.classList,
-      btn25.current.classList,
-      btn50.current.classList,
-    ];
-    // check if there is no other button activated
-    for (const item of btnTip) {
-      if (item.contains('illuminate')) {
-        item.toggle('illuminate');
-      }
-    }
+    btnIluminate();
+
     // Once the selected buttons have been removed, the calculation is performed
     e.target.classList.add('illuminate');
     let value = 1 + parseInt(e.target.value) / 100;
@@ -61,7 +52,9 @@ const MainTip = () => {
 
     setResult(value2.toFixed(2));
   };
-  const handleClick = (e) => {
+
+  const btnIluminate = () => {
+    // check if there is no other button activated
     const btnTip2 = [
       btn5.current.classList,
       btn10.current.classList,
@@ -76,6 +69,10 @@ const MainTip = () => {
         item.toggle('illuminate');
       }
     }
+  };
+
+  const handleClick = (e) => {
+    btnIluminate();
     // Once the selected buttons have been removed, the calculation is performed
     e.target.classList.toggle('illuminate');
     let value = 1 + parseInt(e.target.innerText) / 100;
@@ -84,6 +81,14 @@ const MainTip = () => {
     changePeople(personas, value2);
 
     setResult(value2.toFixed(2));
+  };
+  // reset
+  const handleReset = (e) => {
+    btnIluminate();
+    setResult(0);
+    setOrigin(0);
+    setResultAll(0);
+    setPersonas(0);
   };
   return (
     <main className="contianer__main">
@@ -98,6 +103,8 @@ const MainTip = () => {
               type="number"
               name="bill"
               id="bill"
+              ref={innerBill}
+              value={origin}
               onChange={handleChangeBill}
             />
           </section>
@@ -150,6 +157,8 @@ const MainTip = () => {
               type="number"
               name="people"
               id="people"
+              ref={innerPeople}
+              value={personas}
               onChange={handleChangePeople}
             />
           </section>
@@ -170,7 +179,9 @@ const MainTip = () => {
             <p className="text__countAll">$ {resultAll}</p>
           </section>
           <section className="see__reset">
-            <bottom className="reset__btn">Reset</bottom>
+            <bottom className="reset__btn" onClick={handleReset}>
+              Reset
+            </bottom>
           </section>
         </section>
       </div>
